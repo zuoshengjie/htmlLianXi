@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var book = {};
+    Object.defineProperties(book, {
+      _year: {
+        value: 2004
+      },
+      edition: {
+        value: 1
+      },
+      year: {
+        get: function () {
+          return this._year;
+        },
+        set: function (newValue) {
+          if (newValue > 2004) {
+            this._year = newValue;
+            this.edition += newValue - 2004;
+          }
+        }
+      }
+    });
+    let descriptor = Object.getOwnPropertyDescriptor(book, "year")
+    console.log(descriptor)
+  </script>
+</body>
+
+</html>

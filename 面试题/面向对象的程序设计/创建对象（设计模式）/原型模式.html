@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 1. 每个函数都有prototype原型 指向一个对象（指向函数的原型对象）
+    // 2. 原型对象 自动获得一个 constructor（构造函数）属性
+    // 3. constructor（构造函数）属性 包含一个指向 prototype 属性所在函数的指针
+    // 4. Person.prototype.constructor 指向 Person。
+    // 5. 当调用构造函数创建一个新实例后, 该实例的内部将包含一个指针（内部属性），指向构造函数的原型对象。 ECMA-262 第 5 版中管这个指针叫[[Prototype]] (__proto__)
+    // 6. __proto__ 这个连接存在于实例与构造函数的原型对象之间，而不是存在于实例与构造函数之间
+    // 7. 实例化对象 和 对象之间是否有关系 Person.prototype.isPrototypeOf(person1) ,person1.__proto__ === Person.prototype
+    // 8. 实例属性 会 屏蔽原型属性
+    // 9. hasOwnProperty()方法可以检测一个属性是存在于实例中，还是存在于原型中。 true 实例 false 原型
+    // 10. alert("name" in person1); //true   实例中或原型中都会返回true
+    // 11. 更简单的原型方法,  prototype = {属性， 方法}  但是这样，constructor 就不在指向Person 了，指向 Object 构造函数 （instanceof 还可以识别对象类型， constructor就不可以了 ）
+    /* 
+      12. 处理11的问题
+      Object.defineProperty(Person.prototype, "constructor", {
+        enumerable: false,
+        value: Person
+      });
+    */
+    // 13. 在new 实例化对象后， 在重写原型，会切断原型，拿不到重写的原型里面的属性和方法
+    // 14. 不建议修改原生对象的原型 ，这样会导致代码不可控
+
+    // 缺点
+    // 1. 省去了构造函数初始化的流程，导致所有实例取到的属性和方法都是花一样的。
+    // 2. 因为是共享，在复杂类型下，相同地址会被共享，所以很少有人单独使用
+    /*     
+      function Person() {}
+      Person.prototype = {
+        constructor: Person,
+        name: "Nicholas",
+        age: 29,
+        job: "Software Engineer",
+        friends: ["Shelby", "Court"],
+        sayName: function () {
+          alert(this.name);
+        }
+      };
+      var person1 = new Person();
+      var person2 = new Person();
+      person1.friends.push("Van");
+      alert(person1.friends); //"Shelby,Court,Van"
+      alert(person2.friends); //"Shelby,Court,Van"
+      alert(person1.friends === person2.friends); //true
+    */
+    function Person() {}
+    Person.prototype.name = "Nicholas";
+    Person.prototype.age = 29;
+    Person.prototype.job = "Software Engineer";
+    Person.prototype.sayName = function () {
+      console.log(this.name);
+    };
+    var person1 = new Person();
+    person1.name = '实例属性 会 屏蔽原型属性, 现在person1 的name 取自于 实例属性'
+    console.log(Person.prototype === person1.__proto__, 'person1')
+    person1.sayName(); //"Nicholas"
+    var person2 = new Person();
+    person2.sayName(); //"Nicholas"
+    console.log(person1.sayName === person2.sayName); //true
+  </script>
+</body>
+
+</html>

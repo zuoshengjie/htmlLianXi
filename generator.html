@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>菜鸟教程(runoob.com)</title>
+  <script>
+    const gen = function* () {
+      const data1 = yield new Promise((reslove) => {
+        setTimeout(() => {
+          reslove(1)
+        }, 500)
+      })
+      console.log(data1)
+      const data2 = yield new Promise((reslove) => {
+        setTimeout(() => {
+          reslove(2)
+        }, 200)
+      })
+      console.log(data2)
+    }
+    function run(g) {
+      const next = (data) => {
+        let res = g.next();
+        console.log(res,'res')
+        if(res.done) return;
+        res.value.then(data => {
+          console.log(data,'data')
+          next({value: 213,done: false});
+        })
+      }
+      next({value: 213,done: false});
+    }
+
+    run(gen())
+  </script>
+</head>
+
+<body>
+
+  <h1>我的第一个 JavaScript 程序</h1>
+  <p id="demo">这是一个段落</p>
+
+  <button type="button" onclick="displayDate()">显示日期</button>
+
+</body>
+
+</html>

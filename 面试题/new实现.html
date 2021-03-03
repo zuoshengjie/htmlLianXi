@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script>
+  function myNew(Fn, ...args) {
+    const obj = Object.create(Fn.prototype)
+    const res = Fn.apply(obj, args)
+    return res instanceof Object ? res : obj
+  }
+
+  function Person(name, sex) {
+    this.name = name;
+    this.sex = sex
+    return 123
+  }
+  const d = myNew(Person, '小明', '男')
+  console.log(d.name)
+</script>
+
+<body>
+
+</body>
+
+</html>

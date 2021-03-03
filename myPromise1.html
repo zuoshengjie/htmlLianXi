@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>菜鸟教程(runoob.com)</title>
+  <script>
+    const PENDING = 'PENDING'
+    const FULLFAILD = 'FULLFAILD'
+    const FULLERROR = 'FULLERROR'
+
+    function myPromis() {
+      this._status = PENDING
+      this._fulfilledQueues = []
+      this._rejectedQueues = []
+      this._val = null
+
+      this.reslove = (val) => {
+        const run = () => {
+          if (this._status !== PENDING) return;
+          let c
+          this._status = FULLFAILD
+          while (c = this._fulfilledQueues.shift()) {
+            c(val)
+          }
+        }
+
+        setTimeout(run, 0)
+      }
+      this.reject = (val) => {
+        const run = () => {
+
+          if (this._status !== PENDING) return;
+          let c
+          this._status = FULLERROR
+          while (c = this._rejectedQueues.shift()) {
+            c(val)
+          }
+        }
+        setTimeout(run, 0)
+      }
+      arguments[0](this.reslove, this.reject)
+      this.then = (resloveCall, rejectCall) => {
+        const {
+          _val,
+          _status
+        } = this
+        return new myPromis(() => {
+          const rC = (val) => {
+            resloveCall(val)
+          }
+          const eC = (val) => {
+            rejectCall(val)
+          }
+
+          switch (this._status) {
+            case PENDING:
+              this._fulfilledQueues.push(rC), this._rejectedQueues.push(eC);
+              break
+            case FULLFAILD:
+              rC(_val);
+              break
+            case FULLERROR:
+              eC(_val);
+              break
+          }
+        })
+      }
+    }
+
+    let d = new myPromis((reslove, reject) => {
+      setTimeout(() => {
+        reslove(12)
+      }, 500)
+    })
+
+    d.then((val) => {
+      console.log(val)
+    })
+  </script>
+</head>
+
+<body>
+
+  <h1>我的第一个 JavaScript 程序</h1>
+  <p id="demo">这是一个段落</p>
+
+  <button type="button" onclick="displayDate()">显示日期</button>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .wrap {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .wrap>ul {
+    position: absolute;
+    white-space: nowrap;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .wrap li {
+    display: inline-block;
+    background: red;
+    min-width: 200px;
+    height: 100%;
+  }
+</style>
+
+<body>
+  <div id="wrap" class="wrap">
+    <ul>
+      <li><img src="1.jpg"></li>
+      <li><img src="1.jpg"></li>
+      <li><img src="1.jpg"></li>
+      <li><img src="1.jpg"></li>
+      <li><img src="1.jpg"></li>
+    </ul>
+  </div>
+</body>
+
+</html>
