@@ -10,19 +10,22 @@
 
 <body>
   <script>
-    function Person(name, age, job) {
-      var o = new Object();
-      o.name = name;
-      o.age = age;
-      o.job = job;
-      o.sayName = function () {
-        alert(this.name);
+    // 1. 建议不要使用  就是 工厂函数
+    // 2. 虽然 new 实例化了，但是函数又return 出去了，和原型根本没关系 ，所以不能用instanceof 操作符来确定对象类型
+    function SpecialArray() {
+      //创建数组
+      var values = new Array();
+      //添加值
+      values.push.apply(values, arguments);
+      //添加方法
+      values.toPipedString = function () {
+        return this.join("|");
       };
-      return o;
+      //返回数组
+      return values;
     }
-    var friend = new Person("Nicholas", 29, "Software Engineer");
-    // friend.sayName(); //"Nicholas"
-    console.log(friend)
+    var colors = new SpecialArray("red", "blue", "green");
+    console.log(colors instanceof SpecialArray); // false ，因为 return 了，返回的实例化对象和 构造函数的原型没有关系
   </script>
 </body>
 
