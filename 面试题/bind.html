@@ -13,22 +13,36 @@
     Function.prototype.bind_ = function (context, ...args1) {
       context = context ? Object(context) : window
       context.fn = this;
-      return function (...args2) {
-        context.fn(...args1, ...args2)
-        delete context.fn
-        Object.defineProperty(context,'fn', {
-          
-        })
+      let bound = function (...args2) {
+        // 在new的时候为 27行 Fn.prototype 那就是 context.fn.prototype 原型那就是 test 函数 === context.fn test函数 ，所以绑定的this是函数test
+        // 在直接bind时候， this === window ，直接使用，this.constructor => widow下的constructor  !== context.fn test函数 所以绑定this是 context 
+        context.fn.apply(this.constructor === context.fn ? this : context, [...args1, ...args2])
       }
+
+      // 这一步骤很重要，bound的原型就指向了 context.fn.prototype -> test函数
+      bound.prototype =  context.fn.prototype
+      return bound
     }
 
+
+    function myNew(Fn, ...args) {
+      let obj = {};
+      obj.__proto__ = Fn.prototype
+      // const obj = Object.create(Fn.prototype)
+      const res = Fn.apply(obj, args)
+      return res instanceof Object ? res : obj
+    }
+
+
     function test(...args) {
-      console.log(args, this)
+      console.log(this, 'this', args)
     }
     let d = test.bind_({
       a: 1
     }, 1, 2)
-    d(1, 2, 3)
+
+    myNew(d)
+    // d(1, 2, 3)
   </script>
 </body>
 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .img {
+    height: 400px;
+    background: red;
+    margin: 10px;
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+    let active = false;
+    const lazyLoad = function () {
+      if (!active) {
+        active = true
+        setTimeout(() => {
+          active = false
+          lazyImages.forEach((lazyImage) => {
+            if (lazyImage.getBoundingClientRect().top <= window.innerHeight && lazyImage
+              .getBoundingClientRect().bottom >= 0 && getComputedStyle(lazyImage).display !== 'none') {
+              lazyImage.src = lazyImage.dataset.src;
+              lazyImage.classList.remove("lazy");
+              lazyImages = lazyImages.filter(i => i !== lazyImage);
+              if (lazyImages.length <= 0) {
+                document.removeEventListener('scroll', lazyLoad)
+                window.removeEventListener('resize', lazyLoad)
+                window.removeEventListener('orientationchange', lazyLoad)
+              }
+            }
+          })
+        }, 200)
+      }
+    }
+    lazyLoad();
+    document.addEventListener("scroll", lazyLoad);
+    window.addEventListener("resize", lazyLoad);
+    window.addEventListener("orientationchange", lazyLoad);
+  });
+</script>
+
+<body>
+  <div>
+    <div class="img">
+      <img class="lazy" test="test" data-src="public/1.png" />
+    </div>
+    <div class="img">
+      <img class="lazy" data-src="public/2.png" />
+    </div>
+    <div class="img">
+      <img class="lazy" data-src="public/3.png" />
+    </div>
+    <div class="img">
+      <img class="lazy" data-src="public/4.png" />
+    </div>
+    <div class="img">
+      <img class="lazy" data-src="public/5.png" />
+    </div>
+    <div class="img">
+      <img class="lazy" data-src="public/6.png" />
+    </div>
+    <div class="img">
+      <img class="lazy" data-src="public/7.png" />
+    </div>
+  </div>
+</body>
+
+</html>
