@@ -12,6 +12,17 @@
   <script>
     // 1.其实就是工厂函数， 只不过不对外暴露属性 ，只暴露出想让用户使用的方法， 
     // 2. 不使用 new ，this
+    function Person(name, age, job) {
+      //创建要返回的对象
+      var o = new Object();
+      //可以在这里定义私有变量和函数
+      //添加方法
+      o.sayName = function () {
+        alert(name);
+      };
+      //返回对象
+      return o;
+    }
   </script>
 </body>
 

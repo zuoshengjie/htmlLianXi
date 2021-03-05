@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function deepClone(val) {
+      let result
+      if (typeof val === 'object') {
+        result = Array.isArray(val) ? [] : {}
+        for (let i in val) {
+          result[i] = deepClone(val[i])
+        }
+      } else {
+        result = val
+      }
+
+      return result
+    }
+
+    let obj = {
+      a: 1,
+      b: 2,
+      c: {
+        d: 1
+      }
+    }
+    let obj2 = deepClone(obj)
+    obj2.c.d = 5
+    console.log(obj2, 'obj2', obj); // lhy-log
+  </script>
+</body>
+
+</html>

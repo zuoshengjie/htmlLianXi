@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function object(o) {
+      function F() {}
+      F.prototype = o
+      return new F()
+    }
+
+    function SuperType(name) {
+      this.name = name;
+      this.colors = ["red", "blue", "green"];
+    }
+    SuperType.prototype.sayName = function () {
+      console.log(this.name);
+    };
+
+    function SubType(name, age) {
+      SuperType.call(this, name);
+      this.age = age;
+    }
+
+    function inheritPrototype(subType, superType) {
+      var prototype = object(superType.prototype); //创建对象
+      prototype.constructor = subType; //增强对象
+      subType.prototype = prototype; //指定对象
+    }
+    inheritPrototype(SubType, SuperType);
+    SubType.prototype.sayAge = function () {
+      console.log(this.age);
+    };
+    let instance = new SubType('小明', 20)
+    console.log(instance)
+  </script>
+</body>
+
+</html>

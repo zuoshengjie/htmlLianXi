@@ -9,7 +9,9 @@
 </head>
 <script>
   function myNew(Fn, ...args) {
-    const obj = Object.create(Fn.prototype)
+    let obj = {};
+    obj.__proto__ = Fn.prototype
+    // const obj = Object.create(Fn.prototype)
     const res = Fn.apply(obj, args)
     return res instanceof Object ? res : obj
   }
@@ -17,10 +19,13 @@
   function Person(name, sex) {
     this.name = name;
     this.sex = sex
-    return 123
+    return {
+      name: '123'
+    }
   }
+
   const d = myNew(Person, '小明', '男')
-  console.log(d.name)
+  console.log(d)
 </script>
 
 <body>

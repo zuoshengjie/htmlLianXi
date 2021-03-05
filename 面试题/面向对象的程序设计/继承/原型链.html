@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 1. 原型链的问题，原型属性会被实例共享
+    // 2. 再不影响所有实例下，不能初始化传递参数，修改 原型，所有的实例都被被影响
+    function SuperType() {
+      this.property = true;
+    }
+    SuperType.prototype.getSuperValue = function () {
+      return this.property;
+    };
+
+    function SubType() {
+      this.subproperty = false;
+    }
+    SubType.prototype.test = function() {} // 经过下面一行，SubType.prototype 的原型就发生了改变，指向了 SuperType 的原型
+    //继承了 SuperType
+    SubType.prototype = new SuperType();
+    //添加新方法
+    SubType.prototype.getSubValue = function () {
+      return this.subproperty;
+    };
+    //重写超类型中的方法
+    SubType.prototype.getSuperValue = function () {
+      return false;
+    };
+    var instance = new SubType();
+    console.log(instance); //false
+  </script>
+</body>
+
+</html>
