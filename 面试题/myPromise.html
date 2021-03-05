@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    let PENDING = 'PENDING';
+    let RESLOVE = 'RESLOVE';
+    let REJECT = 'REJECT';
+    class myPromise {
+      constructor(fn) {
+        this.status = PENDING;
+        this.value = '';
+        this.resloveCallbacks = []
+        this.rejectCallbacks = []
+        fn(this.resloveFn, this.rejectFn)
+      }
+      resloveFn = (value) => {
+        if (this.status !== PENDING) return;
+        this.value = value;
+        this.resloveCallbacks.forEach((c) => {
+          c(this.value)
+        })
+      }
+      rejectFn = (value) => {
+        if (this.status !== PENDING) return;
+        this.value = value;
+        this.rejectCallbacks.forEach((c) => {
+          c(this.value)
+        })
+      }
+
+      then(onFulfilled, onRejected) {
+        switch (this.status) {
+          case PENDING:
+            this.resloveCallbacks.push(onFulfilled);
+            this.rejectCallbacks.push(onRejected);
+            break;
+          case RESLOVE:
+            onFulfilled(this.value)
+            break;
+          case REJECT:
+            onRejected(this.value)
+            break;
+        }
+      }
+    }
+
+    let promise = new myPromise((reslove, reject) => {
+      setTimeout(() => {
+        reslove(123)
+      }, 2000)
+    })
+
+    promise.then((res) => {
+      console.log(res)
+    })
+  </script>
+</body>
+
+</html>
