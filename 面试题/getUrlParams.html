@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function getUrlParams(url) {
+      let paramPath = url.split('?')[1]
+      let params = paramPath.split('&').filter(i => !!i);
+      return params.map((path) => {
+        const [key, value] = path.split('=');
+        return {
+          [key]: decodeURI(value)
+        }
+      })
+
+    }
+    let url =
+      'https://fanyi.baidu.com/translate?&aldtype=16047&query=%E7%BB%93%E6%9E%84&keyfrom=baidu&smartresult=dict&lang=auto2zh#zh/en/%E5%A3%B0%E9%9F%B3';
+    let params = getUrlParams(url)
+    console.log(params, 'params')
+  </script>
+</body>
+
+</html>
