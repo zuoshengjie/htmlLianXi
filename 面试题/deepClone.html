@@ -10,20 +10,26 @@
 
 <body>
   <script>
+    const weak = new WeakMap();
     function deepClone(val) {
-      let result
-      if (typeof val === 'object') {
-        result = Array.isArray(val) ? [] : {}
-        for (let i in val) {
-          result[i] = deepClone(val[i])
-        }
-      } else {
-        result = val
-      }
-
-      return result
-    }
-
+      if (typeof val !== 'object'){
+	  	return val
+	  }
+      if(Array.isArray(val)){
+			return val.map(item =>  deepClone(item))
+		}
+      if	(weak.has(val)){
+		 	return weak.get(val)
+		 }
+     if(typeof val === 'object'){
+			 const ww = weak.set(val,val);
+			 let obj = {}
+		 	for (let key in val){
+				obj[key] = deepClone(val[key]); 
+			}
+			 return obj
+		 }
+    
     let obj = {
       a: 1,
       b: 2,
@@ -31,8 +37,8 @@
         d: 1
       }
     }
+    obj.c.d = obj.c
     let obj2 = deepClone(obj)
-    obj2.c.d = 5
     console.log(obj2, 'obj2', obj); // lhy-log
   </script>
 </body>
