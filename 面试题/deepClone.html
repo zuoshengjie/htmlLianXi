@@ -10,25 +10,27 @@
 
 <body>
   <script>
-    const weak = new WeakMap();
-    function deepClone(val) {
-      if (typeof val !== 'object'){
-	  	return val
-	  }
-      if(Array.isArray(val)){
-			return val.map(item =>  deepClone(item))
-		}
-      if	(weak.has(val)){
-		 	return weak.get(val)
-		 }
-     if(typeof val === 'object'){
-			 const ww = weak.set(val,val);
-			 let obj = {}
-		 	for (let key in val){
-				obj[key] = deepClone(val[key]); 
-			}
-			 return obj
-		 }
+  const weakMap = new WeakMap();
+  function deepClone(val) {
+    if (typeof val !== 'object') {
+      return val
+    }
+    if (Array.isArray(val)) {
+      return val.map(item => deepClone(item))
+    }
+    if (weakMap.get(val)) {
+      return weakMap.get(val);
+    }
+    if (typeof val === 'object') {
+      let obj = {};
+      weakMap.set(val, obj);
+      console.log([...weakMap], '[...weakMap]')
+      for (let key in val) {
+        obj[key] = deepClone(val[key]);
+      }
+      return obj
+    }
+  }
     
     let obj = {
       a: 1,
